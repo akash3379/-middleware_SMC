@@ -27,10 +27,10 @@
                         
                         <div class="col-md-7 well">
                             <?php 
-                            foreach ($mapping->map as $param_name => $dept_col) {
+                            foreach ($mapping->map as $i => $dept_col) {
                                 
                              ?>
-                             <p><span class="text-primary"><?php echo $param_name; ?></span> => <?php echo $dept_col[0]; ?> -> <?php echo $dept_col[1]; ?> </p>
+                             <p><span class="text-primary"><?php echo $dept_col[0]; ?></span> => <?php echo $dept_col[1]; ?> -> <?php echo $dept_col[2]; ?> </p>
                             <?php } ?>
                         </div>
                         <div class="col-md-1">
