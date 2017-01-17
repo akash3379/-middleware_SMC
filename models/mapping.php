@@ -31,12 +31,13 @@ class Mapping
 			$des = $r['description'];
 			$query = "select * from mapping_data where map_id=$map_id";
 			$res = mysqli_query($con, $query); 	
+			$i=0;
 			while($m = mysqli_fetch_assoc($res))
 			{
 				$param_name = URL::param_name($m['param_id']);
-				$dept_col = array($m['dept'], $m['col_name']);
-				$map[$param_name] = $dept_col;
-				
+				$dept_col = array($param_name,$m['dept'], $m['col_name']);
+				$map[$i] = $dept_col;
+				$i++;
 			}
 			array_push($mappings, new Mapping($map_id, $url_data->url, $map, $r['created_by'], $r['created_on'], $r['edited_by'], $r['edited_on'], $des));
 		}
@@ -64,11 +65,13 @@ class Mapping
 
 		$query1="select * from mapping_data where map_id=$id";
 		$result1=mysqli_query($con,$query1);
+		$i=0;
 		while($m=mysqli_fetch_assoc($result1))
 		{
 				$param_name = URL::param_name($m['param_id']);
-				$dept_col = array($m['dept'], $m['col_name']);
-				$map[$param_name] = $dept_col;
+				$dept_col = array($param_name,$m['dept'], $m['col_name']);
+				$map[$i] = $dept_col;
+				$i++;
 		} 
 		mysqli_close($con); 	
 			return new Mapping($id, $url_data->url, $map, $r['created_by'], $r['created_on'], $r['edited_by'], $r['edited_on'], $des);
@@ -81,23 +84,24 @@ class Mapping
     	$mapping = Mapping::find($map_id);
     	$data = file_get_contents($mapping->url);
 		$data = json_decode($data, true);
-		$con=connectDB("Dept");
-		foreach($mapping->map as $param_name => $dept_col)
+		$con=connectDB("dept");
+		foreach($mapping->map as $i => $dept_col)
 		{
-			$dept=$dept_col[0];
-			$col=$dept_col[1];
+			$dept=$dept_col[1];
+			$col=$dept_col[2];
 			$count=sizeof($data);
 			for($j=0;$j<$count;$j++)
 			{
-				$d=$data[$j][$param_name];
+				$d=$data[$j][$dept_col[0]];
 				$query="insert into $dept values('$d',NULL,NULL,NULL)";
-				
+				//echo $query."<br>";
 				mysqli_query($con,$query);
 			}
 		}
 		mysqli_close($con); 
 
     }
+
 	public static function add($url,$map,$user,$desc)
 	{
 		$map_id=-1;
@@ -105,20 +109,19 @@ class Mapping
 		$url_data = URL::findByURL($url);
 		$query = "insert into mapping_def(url_id,created_by,created_on,edited_by,edited_on,description) 
 		values($url_data->id,'$user',now(),'$user',now(),'$desc')";
-		
 		$result = mysqli_query($con, $query);
 		if($result)
 		{
 			$map_id = mysqli_insert_id($con);
-
-			foreach ($map as $param_name => $db_col_name) {
-				echo $param_name." : ".$db_col_name[0];
+			var_dump($map);
+			foreach ($map as $i => $db_col_name) {
+				$param_name=$db_col_name[0];
 				$param_id = URL::param_id($param_name, $url);
-				$dept = $db_col_name[0];
-				$col_name = $db_col_name[1];
+				$dept = $db_col_name[1];
+				$col_name = $db_col_name[2];
 				$query = "insert into mapping_data(map_id,param_id,dept,col_name) 
 					values($map_id,$param_id,'$dept','$col_name')";
-				//$result = mysqli_query($con, $query);
+				$result = mysqli_query($con, $query);
 				if(!$result)
 					return -1;
 			}

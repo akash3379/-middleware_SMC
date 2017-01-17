@@ -18,7 +18,7 @@
       <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default" style="padding:10px">
           <div class="panel-body">
-              <form method="post" action="/middleware_mvc/?controller=urls&action=add" class="form-horizontal">
+              <form method="post" action="/-middleware_SMC/?controller=urls&action=add" class="form-horizontal">
                 <div class="form-group">
                   <label for="input_url" class="col-md-3">Endpoint URL</label>
                   <div class="col-md-9">
@@ -61,7 +61,7 @@
             
             foreach ($urls as $url) {
           ?>
-          <a href="/middleware_mvc/?controller=urls&action=show&id=<?php echo $url->id; ?>" class="list-group-item">
+          <a href="/-middleware_SMC/?controller=urls&action=show&id=<?php echo $url->id; ?>" class="list-group-item">
             <h4 class="list-group-item-heading"><?php echo $url->url;?></h4>
             <p class="list-group-item-text"><?php echo $url->shortname;?></p>
             <p class="list-group-item-text"><?php echo $url->des;?></p>

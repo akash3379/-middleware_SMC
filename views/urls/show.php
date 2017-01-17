@@ -20,17 +20,17 @@
                         <?php echo $mapping->des; ?>
                         </a>
                     </span>
-                    <span class="pull-right"><a href="/middleware_mvc/?controller=mappings&action=use_mapping&id=<?php echo $mapping->id; ?>">Use it</a></span>
+                    <span class="pull-right"><a href="/-middleware_SMC/?controller=mappings&action=use_mapping&id=<?php echo $mapping->id; ?>">Use it</a></span>
                     </div>
                     <div id="collapse<?php echo $mapping->id; ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<?php echo $mapping->id; ?>">
                     <div class="panel-body">
                         
                         <div class="col-md-7 well">
                             <?php 
-                            foreach ($mapping->map as $param_name => $dept_col) {
+                            foreach ($mapping->map as $i => $dept_col) {
                                 
                              ?>
-                             <p><span class="text-primary"><?php echo $param_name; ?></span> => <?php echo $dept_col[0]; ?> -> <?php echo $dept_col[1]; ?> </p>
+                             <p><span class="text-primary"><?php echo $dept_col[0]; ?></span> => <?php echo $dept_col[1]; ?> -> <?php echo $dept_col[2]; ?> </p>
                             <?php } ?>
                         </div>
                         <div class="col-md-1">
@@ -72,9 +72,9 @@
         
         <div class="panel-body" style="overflow:scroll;height:80vh">
             <!--===================== Form starts here ========================= -->
-            <form method="post" action="/middleware_mvc/?controller=mappings&action=add">
+            <form method="post" action="/-middleware_SMC/?controller=mappings&action=add">
 
-                <input type="hidden" value="<?php echo $mapping->url?>" name="url">                
+                <input type="hidden" value="<?php echo $mapping->url?>" name="url[]">                
                 <div id="ff">
                 <div class="row">
                     <div class="col-md-4">
@@ -99,7 +99,7 @@
                     <input type="button" value="Add Another" class="btn btn-default" onClick="add_fields()">
                 </div>
                 <div class="row">
-                    <button type="submit" class="btn btn-default" onclick="/middleware_mvc/?controller=mappings&action=add">Submit</button>
+                    <button type="submit" class="btn btn-default">Submit</button>
                 </div>
 
             </form>
